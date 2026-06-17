@@ -6,6 +6,17 @@
 <title>Sam's Club – $500 Gift Card</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DRTCQ7GR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Enabled debug_mode for testing real-time events in GA4 DebugView
+  gtag('config', 'G-6DRTCQ7GR8', { 'debug_mode': true });
+</script>
+
 <style>
 *{
 margin:0;
@@ -247,8 +258,30 @@ Claim Your $500<br>Sam's Club HaulsCard
 </div>
 
 <script>
-function redirect(){
-window.location.href="https://giftclick.org/aff_c?offer_id=4258&aff_id=17763";
+// Prevent multiple redirect clicks
+let isRedirecting = false;
+
+function redirect() {
+  if (isRedirecting) return;
+  isRedirecting = true;
+
+  // Kept your exact affiliate link here
+  const destinationUrl = "https://giftclick.org/aff_c?offer_id=4258&aff_id=17763";
+
+  // Fire GA4 Event tracking
+  gtag('event', 'cta_click', {
+    event_category: 'engagement',
+    event_label: 'Gift Card CTA',
+    value: 1,
+    event_callback: function() {
+      window.location.href = destinationUrl;
+    }
+  });
+
+  // Safe fallback timeout (400ms handles cross-browser link tracking safely)
+  setTimeout(function() {
+    window.location.href = destinationUrl;
+  }, 400);
 }
 
 function toggleFaq(card) {
